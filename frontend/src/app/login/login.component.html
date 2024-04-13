@@ -1,0 +1,36 @@
+<div class="main-div">
+<form class="example-form" [formGroup]="userForm" (ngSubmit)="onSubmit()">
+  <mat-card class="login-card">
+    <mat-card-header>
+      <mat-card-title>Login</mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="login-fields">
+      <mat-form-field class="login-full-width">
+        <mat-label>Utente</mat-label>
+        <input matInput placeholder="Utente"  formControlName="username"/>
+      </mat-form-field>
+      <mat-form-field class="login-full-width">
+        <mat-label>Password</mat-label>
+        <input matInput placeholder="Password" type="password"  formControlName="password"/>
+      </mat-form-field>
+
+      <mat-divider></mat-divider>
+    </mat-card-content>
+    <mat-card-actions align="end">
+      <button mat-button type="submit" [disabled]="!userForm.valid">ACCEDI</button>
+    </mat-card-actions>
+    <mat-card-footer>
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </mat-card-footer>
+  </mat-card>
+</form>
+
+<ng-template #errorDialog>
+  <h2 matDialogTitle>Accesso non consentito!</h2>
+  <p matDialogContent><em>Verifica username e password e riprova...</em></p>
+  <mat-dialog-actions align="end">
+    <button mat-button matDialogClose>Chiudi</button>
+  </mat-dialog-actions>
+</ng-template>
+
+</div>

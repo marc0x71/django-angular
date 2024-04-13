@@ -1,10 +1,19 @@
-import { ApplicationConfig, Provider, importProvidersFrom } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import {
+  ApplicationConfig,
+  Provider,
+  importProvidersFrom,
+} from '@angular/core';
+import { RouteReuseStrategy, provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient } from '@angular/common/http';
+import {
+  HTTP_INTERCEPTORS,
+  HttpClientModule,
+  provideHttpClient,
+} from '@angular/common/http';
 import { TokenInterceptor } from './helper/token.interceptor';
+import { CustomReuseStrategy } from './app.strategies';
 
 const tokenInterceptorProvider: Provider = {
   provide: HTTP_INTERCEPTORS,
@@ -19,5 +28,9 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     importProvidersFrom(HttpClientModule),
     tokenInterceptorProvider,
+    {
+      provide: RouteReuseStrategy,
+      useClass: CustomReuseStrategy,
+    },
   ],
 };

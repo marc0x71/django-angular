@@ -14,6 +14,14 @@ import { Router } from '@angular/router';
 export class TokenInterceptor implements HttpInterceptor {
   constructor(private authService: AuthService, private router: Router) {}
 
+  goToPage(value: any) {
+    this.router.routeReuseStrategy.shouldReuseRoute = function () {
+      return false;
+    };
+    this.router.onSameUrlNavigation = 'reload';
+    this.router.navigate(['/test', value]);
+  }
+
   intercept(
     request: HttpRequest<any>,
     next: HttpHandler
@@ -33,18 +41,27 @@ export class TokenInterceptor implements HttpInterceptor {
         error: (_error) => {
           if (_error.status == 401) {
             // In caso di errore di autenticazione 401, esegue la logout
-            console.warn('Redirecting on login due to 401 error from server');
             if (this.authService.isLogged()) {
               this.authService.refreshToken()?.subscribe((success) => {
                 if (success) {
                   //TODO eseguire reload
-                  console.log("success refresh token: " + this.router.url);
-                  this.router.navigate([this.router.url])
+                  console.log(
+                    'successful refreshed token, reload ' + this.router.url
+                  );
+                  //this.router.navigate([this.router.url])
+                  this.router.navigateByUrl(this.router.url, {
+                    onSameUrlNavigation: 'reload',
+                    skipLocationChange: true,
+                  });
                 } else {
+                  console.warn(
+                    'Redirecting on login due to 401 error from server'
+                  );
                   this.router.navigate(['login']);
                 }
               });
             } else {
+              console.warn('Redirecting on login due to 401 error from server');
               this.authService.logout();
               this.router.navigate(['login']);
             }

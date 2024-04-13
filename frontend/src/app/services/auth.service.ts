@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, map, of } from 'rxjs';
+import { catchError, map, of, tap } from 'rxjs';
 
 const AUTH_URL = 'http://localhost:8000/accounts/';
 const USER_TOKEN = 'user-token';
@@ -24,6 +24,28 @@ export class AuthService {
       })
     );
   }
+  refreshToken() {
+    let item = localStorage.getItem(USER_TOKEN);
+    if (!item) {
+      return;
+    }
+    let tokens = JSON.parse(item);
+
+    return this.http
+      .post(AUTH_URL + 'refresh', { refresh: tokens.refresh })
+      .pipe(
+        map((value: any) => {
+          tokens.access = value.access;
+          localStorage.setItem(USER_TOKEN, JSON.stringify(tokens));
+          return of(true);
+        }),
+        catchError((e) => {
+          console.log(e);
+          this.logout();
+          return of(false);
+        })
+      );
+  }
 
   isLogged(): boolean {
     return localStorage.getItem(USER_TOKEN) != null;
@@ -43,5 +65,9 @@ export class AuthService {
       let tokens = JSON.parse(item);
       return tokens.refresh;
     }
+  }
+
+  logout() {
+    localStorage.removeItem(USER_TOKEN);
   }
 }

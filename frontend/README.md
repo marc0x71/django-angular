@@ -11,5 +11,5 @@ ng serve
 ## Export
 ```shell
 cd frontend
-ng build --output-path ../../backend/mybackend/mybackend/static --output-hashing none
+npm run build
 ```

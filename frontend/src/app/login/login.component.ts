@@ -40,6 +40,7 @@ export class LoginComponent {
     username: new FormControl('', Validators.required),
     password: new FormControl('', Validators.required),
   });
+  hideLoading = true;
 
   @ViewChild('errorDialog') errorDialog!: TemplateRef<any>;
 
@@ -50,9 +51,11 @@ export class LoginComponent {
   ) {}
 
   onSubmit() {
+    this.hideLoading = false;
     this.authService
       .login(this.userForm.value['username']!, this.userForm.value['password']!)
       .subscribe((logged) => {
+        this.hideLoading = true;
         if (logged) {
           this.router.navigate(['home']);
         } else {

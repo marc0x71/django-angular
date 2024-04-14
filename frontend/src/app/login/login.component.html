@@ -19,7 +19,7 @@
     <mat-card-actions align="end">
       <button mat-button type="submit" [disabled]="!userForm.valid">ACCEDI</button>
     </mat-card-actions>
-    <mat-card-footer>
+    <mat-card-footer [hidden]="hideLoading">
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     </mat-card-footer>
   </mat-card>

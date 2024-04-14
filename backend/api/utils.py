@@ -28,7 +28,6 @@ def navigate_xml(node: E.Element, prefix_attributes, prefix_text):
 def xml_to_json(document, prefix_attributes='@', prefix_text='#'):
     try:
         root = E.fromstring(document)
-        print(root)
 
         result = navigate_xml(root, prefix_attributes, prefix_text)
 

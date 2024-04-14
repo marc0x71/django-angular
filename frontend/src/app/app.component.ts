@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
 import { MatButtonModule } from '@angular/material/button';
@@ -36,7 +36,7 @@ export class AppComponent implements OnInit {
 
   @ViewChild('sidenav') sidenav!: MatSidenav;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
     this.isLogged = this.authService.isLogged();
@@ -45,5 +45,14 @@ export class AppComponent implements OnInit {
   openMenu() {
     console.log('open!');
     this.sidenav.toggle();
+  }
+
+  logout() {
+    this.authService.logout();
+    this.isLogged = false;
+    this.router.navigateByUrl(this.router.url, {
+      onSameUrlNavigation: 'reload',
+      skipLocationChange: true,
+    });
   }
 }

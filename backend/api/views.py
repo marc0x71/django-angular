@@ -44,15 +44,17 @@ class XmlViewer(APIView):
 
 class Xml2JsonViewer(APIView):
     def get(self, request, *args, **kwargs):
-        data = """<?xml version="1.0" encoding="UTF-8"?>
-                <root>
-                    <element1 attribute1 = 'first attribute'>
-                    </element1>
-                    <element2 attribute1 = 'second attribute'>
-                        some data
-                    </element2>
-                </root>
-                """
+        template = loader.get_template("example.xml")
+        context = {
+            "first": "first attribute",
+            "second": "second attribute",
+            "data": [
+                {"id": 0, "name": "Sylvia Delaney"},
+                {"id": 1, "name": "Ruthie Compton"},
+                {"id": 2, "name": "Pickett Parks"},
+            ],
+        }
+        data = template.render(context, request)
         return Response(utils.xml_to_json(data), status=status.HTTP_200_OK)
 
 

@@ -4,7 +4,7 @@
     </element1>
     <element2 attribute1 = "{{second}}">
 {% for d in data %}
-        <value id="{{d.id}}" name="{{d.name}}" />
+        <value id="{{d.id}}">{{d.name}}</value>
 {% endfor %}
     </element2>
 </root>

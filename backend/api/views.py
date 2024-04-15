@@ -1,6 +1,7 @@
 import asyncio
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.template import loader
 
 from django.views import View
 from rest_framework.views import APIView
@@ -25,6 +26,23 @@ class DataViewer(APIView):
 
 
 class XmlViewer(APIView):
+    def get(self, request, *args, **kwargs):
+        template = loader.get_template("example.xml")
+        context = {
+            "first": "first attribute",
+            "second": "second attribute",
+            "data": [
+                {"id": 0, "name": "Sylvia Delaney"},
+                {"id": 1, "name": "Ruthie Compton"},
+                {"id": 2, "name": "Pickett Parks"},
+            ],
+        }
+        return HttpResponse(
+            utils.xml_pretty(template.render(context, request)), status=status.HTTP_200_OK
+        )
+
+
+class Xml2JsonViewer(APIView):
     def get(self, request, *args, **kwargs):
         data = """<?xml version="1.0" encoding="UTF-8"?>
                 <root>

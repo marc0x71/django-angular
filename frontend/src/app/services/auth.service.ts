@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, map, of, tap } from 'rxjs';
+import { Subject, catchError, map, of, tap } from 'rxjs';
 
 const AUTH_URL = 'http://localhost:8000/accounts/';
 const USER_TOKEN = 'user-token';
@@ -9,16 +9,26 @@ const USER_TOKEN = 'user-token';
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private http: HttpClient) {}
+  private isLoggedIn$ = new Subject<boolean>();
+
+  constructor(private http: HttpClient) {
+    this.isLoggedIn$.next(false);
+  }
+
+  isLoggedIn() {
+    return this.isLoggedIn$.asObservable();
+  }
 
   login(username: string, password: string) {
     localStorage.removeItem(USER_TOKEN);
     return this.http.post(AUTH_URL + 'login', { username, password }).pipe(
       map((value) => {
         localStorage.setItem(USER_TOKEN, JSON.stringify(value));
+        this.isLoggedIn$.next(true);
         return of(true);
       }),
       catchError((e) => {
+        this.isLoggedIn$.next(false);
         console.error(e.message);
         return of(false);
       })
@@ -37,6 +47,7 @@ export class AuthService {
         map((value: any) => {
           tokens.access = value.access;
           localStorage.setItem(USER_TOKEN, JSON.stringify(tokens));
+          this.isLoggedIn$.next(true);
           return of(true);
         }),
         catchError((e) => {
@@ -69,5 +80,6 @@ export class AuthService {
 
   logout() {
     localStorage.removeItem(USER_TOKEN);
+    this.isLoggedIn$.next(false);
   }
 }

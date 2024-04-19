@@ -36,7 +36,9 @@ export class AppComponent implements OnInit {
 
   @ViewChild('sidenav') sidenav!: MatSidenav;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) {
+    authService.isLoggedIn().subscribe(loginStatus => this.isLogged = loginStatus);
+  }
 
   ngOnInit(): void {
     this.isLogged = this.authService.isLogged();

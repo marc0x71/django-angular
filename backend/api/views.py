@@ -9,8 +9,11 @@ from rest_framework.response import Response
 from rest_framework.request import Request
 from rest_framework import status
 from rest_framework import permissions
+from rest_framework import generics
 
 from api import utils
+from .serializers import EnvironmentSerializer, ActionSerializer
+from .models import Environment, Action
 
 
 # Create your views here.
@@ -85,3 +88,16 @@ class GetTemplateView(APIView):
 
         data = template.render(request.data, request)
         return Response(utils.xml_to_json(data), status=status.HTTP_200_OK)
+
+class EnvironmentListAPI(generics.ListAPIView):
+    model = Environment
+    serializer_class = EnvironmentSerializer
+    queryset = Environment.objects.all()
+    
+class ActionListAPI(generics.ListAPIView):
+    model = Action
+    serializer_class = ActionSerializer
+    
+    def get_queryset(self):
+        env = self.kwargs['env']
+        return Action.objects.filter(environment=env)

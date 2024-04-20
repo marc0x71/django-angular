@@ -49,6 +49,17 @@ Email Address []:
 ```
 
 Avvio
+Development
+
 ```bash
+cd backend
+source env/bin/activate
 python manage.py runserver_plus --cert-file ./cert/cert.pem --key-file ./cert/key.pem 8443
+```
+
+Production
+```bash
+cd backend
+source env/bin/activate
+gunicorn --certfile cert/cert.pem --keyfile cert/key.pem --bind 0.0.0.0:8443 -w 4 config.wsgi
 ```

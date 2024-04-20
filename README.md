@@ -48,13 +48,13 @@ Common Name (e.g. server FQDN or YOUR name) []:localhost
 Email Address []:
 ```
 
-Avvio
+## Avvio
 Development
 
 ```bash
 cd backend
 source env/bin/activate
-python manage.py runserver_plus --cert-file ./cert/cert.pem --key-file ./cert/key.pem 8443
+./manage.py runserver
 ```
 
 Production

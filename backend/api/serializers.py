@@ -5,7 +5,7 @@ from .models import Environment, Action
 class EnvironmentSerializer(serializers.ModelSerializer):
     class Meta():
         model = Environment
-        fields = ['name', 'base_url']
+        fields = ['name', 'description', 'base_url']
         
 class ActionSerializer(serializers.ModelSerializer):
     #environment_name = serializers.CharField(source='environment.name')

@@ -29,7 +29,7 @@ class DataViewer(APIView):
         return Response(data, status=status.HTTP_200_OK)
 
 
-# http --print=hbm  http://localhost:8000/api/xml
+# http --print=hbm --verify=no https://localhost:8443/api/xml
 class XmlViewer(APIView):
     def get(self, request, *args, **kwargs):
         template = loader.get_template("example.xml")
@@ -48,7 +48,7 @@ class XmlViewer(APIView):
         )
 
 
-# http --print=hbm  http://localhost:8000/api/xml2json
+# http --print=hbm --verify=no https://localhost:8443/api/xml2json
 class Xml2JsonViewer(APIView):
     def get(self, request, *args, **kwargs):
         template = loader.get_template("example.xml")
@@ -65,7 +65,7 @@ class Xml2JsonViewer(APIView):
         return Response(utils.xml_to_json(data), status=status.HTTP_200_OK)
 
 
-# http --print=hbm  http://localhost:8000/api/async
+# http --print=hbm --verify=no https://localhost:8443/api/async
 class AsyncView(View):
     async def get(self, request, *args, **kwargs):
         # Perform view logic using await.
@@ -77,8 +77,7 @@ class AsyncView(View):
         await asyncio.sleep(2)
         return HttpResponse(data, status=status.HTTP_200_OK)
 
-
-# echo '{"first":1,"second":2, "data": [{"id":1,"name":"Mario"},{"id":2,"name":"Luigi"}]}'|http --print=hbm -v post http://localhost:8000/api/template/example
+# echo '{"first":1,"second":2, "data": [{"id":1,"name":"Mario"},{"id":2,"name":"Luigi"}]}'|http --print=hbm -v post --verify=no https://localhost:8443/api/template/example
 class GetTemplateView(APIView):
     def post(self, request: Request, tpl_name, format=None):
         try:
@@ -89,15 +88,19 @@ class GetTemplateView(APIView):
         data = template.render(request.data, request)
         return Response(utils.xml_to_json(data), status=status.HTTP_200_OK)
 
+
+# http --verify=no https://localhost:8443/api/environments
 class EnvironmentListAPI(generics.ListAPIView):
     model = Environment
     serializer_class = EnvironmentSerializer
     queryset = Environment.objects.all()
-    
+
+
+# http --verify=no https://localhost:8443/api/actions/dev
 class ActionListAPI(generics.ListAPIView):
     model = Action
     serializer_class = ActionSerializer
-    
+
     def get_queryset(self):
-        env = self.kwargs['env']
+        env = self.kwargs["env"]
         return Action.objects.filter(environment=env)

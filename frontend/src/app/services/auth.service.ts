@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Subject, catchError, map, of, tap } from 'rxjs';
+import { Subject, catchError, map, of } from 'rxjs';
 import { environment } from './../../environments/environment';
 
 const AUTH_URL = environment.apiUrl + '/accounts/';

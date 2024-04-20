@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     # http://whitenoise.evans.io/en/stable/django.html#using-whitenoise-in-development
     "whitenoise.runserver_nostatic",
     "corsheaders",
+    "django_extensions",
     "rest_framework",
     "accounts",
     "api",
@@ -173,6 +174,9 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:8080",
     "http://127.0.0.1:9000",
     "http://127.0.0.1:4200",
+    "https://localhost:8080",
+    "https://127.0.0.1:9000",
+    "https://127.0.0.1:4200",
 ]
 
 CORS_ALLOW_METHODS = (
@@ -234,3 +238,10 @@ LOGGING = {
         },
     },
 }
+
+# =======================================================
+# HTTPS
+# =======================================================
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True

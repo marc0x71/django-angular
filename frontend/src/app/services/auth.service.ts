@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject, catchError, map, of, tap } from 'rxjs';
+import { environment } from './../../environments/environment';
 
-const AUTH_URL = 'http://localhost:8000/accounts/';
+const AUTH_URL = environment.apiUrl + '/accounts/';
 const USER_TOKEN = 'user-token';
 
 @Injectable({

@@ -2,3 +2,4 @@ env
 __pycache__
 config/static/browser
 db.sqlite3
+cert

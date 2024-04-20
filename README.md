@@ -32,3 +32,23 @@ Se è il primo utilizzo, occorre importare le dipendenze
 ```bash
 pip -r requirements.txt
 ```
+
+## Creazione certificati
+```bash
+mkdir cert && cd cert
+openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365 -nodes
+```
+ad esempio
+```Country Name (2 letter code) [AU]:IT
+State or Province Name (full name) [Some-State]:Italy
+Locality Name (eg, city) []:Rome
+Organization Name (eg, company) [Internet Widgits Pty Ltd]:
+Organizational Unit Name (eg, section) []:
+Common Name (e.g. server FQDN or YOUR name) []:localhost
+Email Address []:
+```
+
+Avvio
+```bash
+python manage.py runserver_plus --cert-file ./cert/cert.pem --key-file ./cert/key.pem 8443
+```

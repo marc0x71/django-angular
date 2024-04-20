@@ -5,9 +5,12 @@
 cd frontend
 ng add @angular/material
 
-ng serve
+ng serve --configuration=development
 ```
-
+oppure
+```
+npm run start
+```
 ## Export
 ```shell
 cd frontend

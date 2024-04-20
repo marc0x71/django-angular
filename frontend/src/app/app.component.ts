@@ -11,6 +11,7 @@ import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 
 import { SideMenuComponent } from './side-menu/side-menu.component';
 import { AuthService } from './services/auth.service';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -38,6 +39,7 @@ export class AppComponent implements OnInit {
 
   constructor(private authService: AuthService, private router: Router) {
     authService.isLoggedIn().subscribe(loginStatus => this.isLogged = loginStatus);
+    console.log("production: " + environment.production);
   }
 
   ngOnInit(): void {
